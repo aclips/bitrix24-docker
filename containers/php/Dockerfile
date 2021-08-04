@@ -55,5 +55,5 @@ RUN chmod a+w /etc/ImageMagick-6/policy.xml
 RUN sed -i -e 's/coder" rights="none" pattern="PDF/coder" rights="read|write" pattern="PDF/g' /etc/ImageMagick-6/policy.xml
 #RUN rm -f /etc/php/7.4/fpm/pool.d/z-overrides.conf
 RUN cd /bin && curl --silent --show-error https://getcomposer.org/installer | php && mv composer.phar composer && chmod 777 composer
-WORKDIR /var/www/html
+WORKDIR /home/bitrix/www
 EXPOSE 9000

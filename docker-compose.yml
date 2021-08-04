@@ -15,7 +15,7 @@ services:
     depends_on:
       - mysql
     volumes:
-      - ./../:/var/www/html
+      - ./www:/home/bitrix/www
       - ./logs/nginx:/var/log/nginx
     links:
       - php
@@ -26,7 +26,7 @@ services:
     networks:
       default:
         aliases:
-          - rospartner.localhost
+          - project.localhost
 
   php:
     build:
@@ -37,7 +37,7 @@ services:
         GROUP_ID: "$GROUP_ID"
     container_name: ${PROJECT_PREFIX}_php
     volumes:
-      - ./../:/var/www/html
+      - ./www:/home/bitrix/www
       - ./logs/php:/var/log/php
       - ./data/sessions:/var/www/sessions
     links:
