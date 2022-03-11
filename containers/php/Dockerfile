@@ -38,10 +38,8 @@ RUN apt-get update \
     php7.4-zip \
     php7.4-soap \
     ssmtp \
-    libreoffice \
     wget \
     bash \
-    ghostscript \
     rsync \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
