@@ -14,6 +14,7 @@ services:
     container_name: ${PROJECT_PREFIX}_webserver
     depends_on:
       - mysql
+      - push
     volumes:
       - ./www:/home/bitrix/www
       - ./logs/nginx:/var/log/nginx
@@ -26,7 +27,7 @@ services:
     networks:
       default:
         aliases:
-          - project.localhost
+          - ${PROJECT_PREFIX}.localhost
 
   php:
     build:
@@ -39,7 +40,6 @@ services:
     volumes:
       - ./www:/home/bitrix/www
       - ./logs/php:/var/log/php
-      - ./data/sessions:/var/www/sessions
     links:
       - mysql
     restart: unless-stopped
@@ -49,7 +49,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_HOST: ${MYSQL_HOST}
-      PROJECT_PREFIX: "$PROJECT_PREFIX"
+      PROJECT_PREFIX: ${PROJECT_PREFIX}
 
   mysql:
     ports:
@@ -76,3 +76,10 @@ services:
     image: memcached:latest
     container_name: ${PROJECT_PREFIX}_memcached
     restart: unless-stopped
+
+  push:
+    build: 
+        context: ./containers/push
+        dockerfile: ./Dockerfile
+    restart: unless-stopped
+    container_name: ${PROJECT_PREFIX}_push

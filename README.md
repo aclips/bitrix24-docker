@@ -8,52 +8,45 @@
 
 ```bash
 $ cd ~/projects
-$ git clone https://github.com/aclips/bitrix24-docker
+$ git clone https://git.efusion.ru/aclips/docker-bitrix24
 
 # Переименование директории проекта
-$ mv ./bitrix24-docker project_name
+$ mv ./docker-bitrix24 project_name
+
+# Альтернативный вариант (чтобы не делать каждый раз git clone):
+$ cp -R ./docker-bitrix24 project_name
 ```
 
 ### 2. Настройка
 
+После копирования проекта дополнительно нужно сконфигурировать: `.env`-файл проекта и настройки push-сервера.
+
 #### 2.1 .env файл
 
-При первом запуске сборки будет создан файл переменных окружения ```.env``` на базе файла ```.env.example```.
-Файл ```.env.example``` нужно изменить в соответствии с проектом, над которым будет вестись разработка.
+Перед стартом проекта необходимо выполнить команду `./dctl.sh make:env`, который создаст `.env`-файл по шаблону.
+Можно не пользоваться этой утилитой, а вручную скопировать `.env.example` в `.env` и отредактировать его
 
-```
-PROJECT_PREFIX=poject_name
-APP_ENV=test
-HTTP_PORT=80
+#### 2.2 push-сервер
 
-# MySQL settings
-MYSQL_HOST=mysql
-MYSQL_DATABASE=db_name
-MYSQL_USER=db_user
-MYSQL_PASSWORD=db_password
-```
+Для того чтобы подключить в своем проекте локальный push-сервер на технологии websocket при развороте сконифгурировать необходимые параметры в конфигурационном файле.
+Конфигурационный файл находится в `./containers/push/push_config.toml`.
 
-#### 2.2 docker-compose.yml
-
-Для удобства, в файле __docker-compose.yml__ в контейнере nginx можно указать alias для адреса проекта
-
-```yaml
-services:
-  nginx:
-    ...
-    networks:
-      default:
-        aliases:
-          - project.localhost
-```
+Нужно сконфигурировать `security`-раздел:
+Либо __выключить__ проверку подписи (`enabled = false`)
+Либо в `key` задать ключ, который в последствии будет использоваться в настройка модуля "Push'n'pull" Битрикс24.
+Дополнительные настройки см в п.7 инструкции.
 
 ### 3. Запуск контейнеров
+
+Для запуска сборки необходимо использовать один из следующих вариантов запуска:
 
 Вместо стандартного запуска контейнеров через ```docker-compose up``` можно исполнять файл ```up.sh```
 
 ```bash
 $ sudo ./up.sh
 ```
+
+Альтернативный вариант: использовать команду `sudo ./dctl.sh up silent`
 
 После успешного запуска по адресу __project.localhost__, указанному в *[пт 2.2] docker-compose.yml*, будет отображаться 
 содержимое директории *./www*
@@ -67,8 +60,10 @@ $ sudo ./up.sh
 Для остановки контейнеров можно выполнить файл ```down.sh```.
 
 ```bash
-$ sudo ./up.sh
+$ sudo ./down.sh
 ```
+Альтернативный вариант: использовать команду `sudo ./dctl.sh down`
+
 
 ### 5. Контроллер dctl.sh
 __dctl.sh__ - скрипт предоставляющий доступ к часто используемым сценариям.
@@ -97,3 +92,13 @@ cept some_command (cept generate:cept acceptance Test) - run codeception with pa
 > При использовании продукции от Apple на M1 Chip __mysql:5.7__ нужно заменить на __mariadb:10.5__
 >
 > __Файл__ *./containers/mysql/Dockerfile* FROM mysql:5.7 > FROM mariadb:10.5
+
+### 7. Настройки push-сервера
+
+После запуска проекта необходимо закончить настройку push-сервера.
+
+`На сервер установлена:   Виртуальная машина 7.3 и новее (Bitrix Push server 2.0) `
+`Путь для публикации команд: http://push:9099/bitrix/pub/`
+`Код-подпись для взаимодействия с сервером: <из push_config.toml>`
+
+>В случае если в `push_config.toml` в разделе `[security]` указано `enabled = false` то не важно что указано к "код-подпись" - все равно не проверяется.

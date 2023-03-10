@@ -20,6 +20,13 @@ if [ "$GROUP_ID" == "0" ]; then
 fi
 
 
+export DOCKER_COMPOSE_CMD="docker-compose";
+
+if ! command -v docker-compose &> /dev/null
+then
+    export DOCKER_COMPOSE_CMD="docker compose";
+fi
+
 test -e "./.env" || { cp .env.example .env; };
 #load .env
 export $(egrep -v '^#' .env | xargs)
@@ -112,24 +119,24 @@ if [ "$1" == "db" ]; then
 fi
 
 if [ "$1" == "build" ]; then
-    docker-compose -p ${PROJECT_PREFIX} build 
+    ${DOCKER_COMPOSE_CMD} -p ${PROJECT_PREFIX} build 
 fi
 
 if [ "$1" == "up" ]; then
-  docker-compose -p ${PROJECT_PREFIX} build
+    ${DOCKER_COMPOSE_CMD} -p ${PROJECT_PREFIX} build
     if [ "$2" == "silent" ]; then
-        docker-compose -p ${PROJECT_PREFIX} up -d
+        ${DOCKER_COMPOSE_CMD} -p ${PROJECT_PREFIX} up -d
     else
-        docker-compose -p ${PROJECT_PREFIX} up
+        ${DOCKER_COMPOSE_CMD} -p ${PROJECT_PREFIX} up
     fi
 fi
 
 if [ "$1" == "down" ]; then
-    docker-compose -p ${PROJECT_PREFIX} down
+    ${DOCKER_COMPOSE_CMD} -p ${PROJECT_PREFIX} down
 fi
 
 if [ "$1" == "cli" -o "$1" == "mg" ]; then
-        runInPhp php ${PROJECT_PREFIX}/local/modules/ds.migrate/tools/migrate.php "${@:2}"
+    runInPhp php ${PROJECT_PREFIX}/local/modules/ds.migrate/tools/migrate.php "${@:2}"
 fi
 
 if [ "$1" == "run" ]; then

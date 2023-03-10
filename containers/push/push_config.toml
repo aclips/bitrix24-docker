@@ -1,0 +1,10 @@
+[general]
+port = 9099
+workers = 2
+
+[security]
+enabled = false
+key = "CkRkXJYp1zpaHrVavjF6mN5tJNksa5Oh70MjpoPsXcN5haGJgN9J2CnkKGPQLj7jOyADgDrRVWe32PsGL6uWcIRcBiCPyBiCpR6NNKBwdCorDRMaPFUJNHWlcjNcHK9Q"
+
+[log]
+level = "error"
