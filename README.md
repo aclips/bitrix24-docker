@@ -8,7 +8,7 @@
 
 ```bash
 $ cd ~/projects
-$ git clone https://git.efusion.ru/aclips/docker-bitrix24
+$ git clone https://github.com/aclips/bitrix24-docker
 
 # Переименование директории проекта
 $ mv ./docker-bitrix24 project_name
