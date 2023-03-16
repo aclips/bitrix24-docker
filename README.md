@@ -11,10 +11,10 @@ $ cd ~/projects
 $ git clone https://github.com/aclips/bitrix24-docker
 
 # Переименование директории проекта
-$ mv ./docker-bitrix24 project_name
+$ mv ./bitrix24-docker project_name
 
 # Альтернативный вариант (чтобы не делать каждый раз git clone):
-$ cp -R ./docker-bitrix24 project_name
+$ cp -R ./bitrix24-docker project_name
 ```
 
 ### 2. Настройка
