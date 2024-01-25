@@ -14,6 +14,8 @@ ENV PROJECT_PREFIX=${PROJECT_PREFIX}
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
