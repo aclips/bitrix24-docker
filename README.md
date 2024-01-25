@@ -119,7 +119,7 @@ cept some_command (cept generate:cept acceptance Test) - run codeception with pa
 В настройках PHPStorm перейти в раздел Build, Execution, Deployment -> Docker. Добавить
 подключение к Docker нажав `+`. Оставить настройки по умолчанию.
 
-#### 8.3 Добавление внешнего интерпритатора
+#### 8.3 Добавление внешнего интерпретатора
 
 В настройках перейти в раздел PHP, нажать `...` справа от настройки CLI Interpreter. В открывшемся окне CLI
 Interpreters нажать `+`, (выбрать `From Docker, Vagrant...`). В разделе `Lifecycle` выбрать
